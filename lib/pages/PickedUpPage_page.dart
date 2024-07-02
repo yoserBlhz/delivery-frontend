@@ -137,6 +137,8 @@ class PickedUpDeliveriesPage extends StatefulWidget {
 
 class _PickedUpDeliveriesPageState extends State<PickedUpDeliveriesPage> {
   List<ColisModel> colisList = []; // Liste pour stocker les colis
+    List<ColisModel> pickedUpColisList = []; //Liste our completed deliveries
+
 
   @override
   void initState() {
@@ -149,10 +151,13 @@ class _PickedUpDeliveriesPageState extends State<PickedUpDeliveriesPage> {
       Uri.parse('https://delivery-4yv5.onrender.com/colis'), // Remplacez par votre endpoint correct
     );
 
-    if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
+      List<ColisModel> allColis = data.map((item) => ColisModel.fromJson(item)).toList();
+
       setState(() {
-        colisList = data.map((item) => ColisModel.fromJson(item)).toList();
+        colisList = allColis; // Mettre à jour colisList avec tous les colis
+        pickedUpColisList = allColis.where((colis) => colis.status == "PickedUp").toList();
       });
     } else {
       print('Failed to load colis');
@@ -250,11 +255,11 @@ class _PickedUpDeliveriesPageState extends State<PickedUpDeliveriesPage> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: colisList.length,
+                      itemCount: pickedUpColisList.length,
                       itemBuilder: (context, index) {
                         return DeliveryShort(
-                          location: colisList[index].location,
-                          id: colisList[index].id,
+                          location: pickedUpColisList[index].location,
+                          id: pickedUpColisList[index].id,
                         );
                       },
                     ),

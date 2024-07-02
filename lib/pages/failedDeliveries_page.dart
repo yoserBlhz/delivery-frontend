@@ -137,6 +137,8 @@ class FailedDeliveriesPage extends StatefulWidget {
 
 class _FailedDeliveriesPageState extends State<FailedDeliveriesPage> {
   List<ColisModel> colisList = []; 
+    List<ColisModel> failedColisList = []; //Liste our failed deliveries
+
 
   @override
   void initState() {
@@ -149,10 +151,13 @@ class _FailedDeliveriesPageState extends State<FailedDeliveriesPage> {
       Uri.parse('https://delivery-4yv5.onrender.com/colis'), 
     );
 
-    if (response.statusCode == 200) {
+     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
+      List<ColisModel> allColis = data.map((item) => ColisModel.fromJson(item)).toList();
+
       setState(() {
-        colisList = data.map((item) => ColisModel.fromJson(item)).toList();
+        colisList = allColis; // Mettre à jour colisList avec tous les colis
+        failedColisList = allColis.where((colis) => colis.status == "Failed").toList();
       });
     } else {
       print('Failed to load colis');
@@ -250,11 +255,11 @@ class _FailedDeliveriesPageState extends State<FailedDeliveriesPage> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: colisList.length,
+                      itemCount: failedColisList.length,
                       itemBuilder: (context, index) {
                         return DeliveryShort(
-                          location: colisList[index].location,
-                          id: colisList[index].id,
+                          location: failedColisList[index].location,
+                          id: failedColisList[index].id,
                         );
                       },
                     ),

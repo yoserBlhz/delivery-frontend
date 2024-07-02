@@ -330,6 +330,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ColisModel> colisList = []; // Liste pour stocker les colis
+  List<ColisModel> enStockColisList = []; //Liste our completed deliveries
+
 
   @override
   void initState() {
@@ -346,6 +348,8 @@ class _HomePageState extends State<HomePage> {
       List<dynamic> data = jsonDecode(response.body);
       setState(() {
         colisList = data.map((item) => ColisModel.fromJson(item)).toList();
+        enStockColisList = colisList.where((colis) => colis.status == "enStock").toList();
+
       });
     } else {
       print('Failed to load colis');
@@ -464,11 +468,11 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                        itemCount: colisList.length,
+                        itemCount: enStockColisList.length,
                         itemBuilder: (context, index) {
                           return DeliveryCard(
-                            clientName: colisList[index].clientName,
-                            location: colisList[index].location,
+                            clientName: enStockColisList[index].clientName,
+                            location: enStockColisList[index].location,
                           );
                         },
                       ),

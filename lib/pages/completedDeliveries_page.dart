@@ -138,6 +138,7 @@ class CompletedDeliveriesPage extends StatefulWidget {
 
 class _CompletedDeliveriesPageState extends State<CompletedDeliveriesPage> {
   List<ColisModel> colisList = []; // Liste pour stocker les colis
+  List<ColisModel> completedColisList = []; //Liste our completed deliveries
 
   @override
   void initState() {
@@ -150,10 +151,22 @@ class _CompletedDeliveriesPageState extends State<CompletedDeliveriesPage> {
       Uri.parse('https://delivery-4yv5.onrender.com/colis'), // Remplacez par votre endpoint correct
     );
 
-    if (response.statusCode == 200) {
+   /* if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       setState(() {
         colisList = data.map((item) => ColisModel.fromJson(item)).toList();
+      });
+    } else {
+      print('Failed to load colis');
+    }
+  }*/
+     if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<ColisModel> allColis = data.map((item) => ColisModel.fromJson(item)).toList();
+
+      setState(() {
+        colisList = allColis; // Mettre à jour colisList avec tous les colis
+        completedColisList = allColis.where((colis) => colis.status == "Completed").toList();
       });
     } else {
       print('Failed to load colis');
@@ -251,11 +264,11 @@ class _CompletedDeliveriesPageState extends State<CompletedDeliveriesPage> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: colisList.length,
+                      itemCount: completedColisList.length,
                       itemBuilder: (context, index) {
                         return DeliveryShort(
-                          location: colisList[index].location,
-                          id: colisList[index].id,
+                          location: completedColisList[index].location,
+                          id: completedColisList[index].id,
                         );
                       },
                     ),

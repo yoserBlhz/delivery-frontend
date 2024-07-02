@@ -22,6 +22,33 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     fetchColisDetails();
   }
 
+
+Future<void> updateDeliveryStatus(String status) async {
+  // Envoyer la requête HTTP pour mettre à jour le statut de la livraison
+  final response = await http.patch(
+    Uri.parse('https://delivery-4yv5.onrender.com/colis/${widget.id}/status'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'status': status,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    // Succès : Mettre à jour l'affichage ou effectuer d'autres actions nécessaires
+    setState(() {
+      colisDetails['status'] = status;
+    });
+  } else {
+    // Gérer les erreurs
+    print('Failed to update delivery status');
+  }
+}
+
+
+
+
   Future<void> fetchColisDetails() async {
     final response = await http.get(Uri.parse('https://delivery-4yv5.onrender.com/colis/${widget.id}'));
 
@@ -212,7 +239,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     );
   }
 
-  Widget buildStatusButton(String text, String imagePath) {
+  /*Widget buildStatusButton(String text, String imagePath) {
       return Column(
       children: [
         Image.asset(
@@ -231,5 +258,34 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         ),
       ],
     );
-  }
+  }*/
+
+
+Widget buildStatusButton(String text, String imagePath) {
+  return GestureDetector(
+    onTap: () {
+      updateDeliveryStatus(text); // Appel à une méthode pour mettre à jour le statut
+    },
+    child: Column(
+      children: [
+        Image.asset(
+          imagePath,
+          height: 50,
+          width: 50,
+        ),
+        SizedBox(height: 4),
+        Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
 }
