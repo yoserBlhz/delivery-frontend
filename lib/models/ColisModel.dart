@@ -8,15 +8,17 @@ class ColisModel {
   final String amount;
   final String clientName;
   final String clientPhone;
+  final String status;
 
   ColisModel({
-     required this.id,
+    required this.id,
     required this.creationDate,
     required this.description,
     required this.location,
     required this.amount,
     required this.clientName,
     required this.clientPhone,
+    required this.status,
   });
 
   factory ColisModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class ColisModel {
       amount: json['amount'].toString(),
       clientName: json['clientName'],
       clientPhone: json['clientPhone'],
+      status: json['status'],
     );
   }
 }

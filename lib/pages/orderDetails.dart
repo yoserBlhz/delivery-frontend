@@ -1,213 +1,4 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
-/*import 'package:flutter/material.dart';
-
-class OrderDetailsPage extends StatelessWidget {
-  const OrderDetailsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('lib/images/map.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 40, 
-            left: 16, 
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black, size: 30),
-              onPressed: () {
-                Navigator.pushNamed(context,'/allDeliveries');
-              },
-            ),
-          ),
-          Positioned(
-            top: 100,
-            left: 0,
-            right: 0,
-            bottom: 80, // Adjusted to make space for the bottom container
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Image.asset(
-                          'lib/images/details.png',
-                          height: 90,
-                          width: 90,
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Your Order Details',
-                            style: TextStyle(
-                              color: Color(0xFF202E5C),
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    buildDetailsRow('Order Id', '123456789'),
-                    buildDetailsRow('Description', 'Sports Material'),
-                    buildDetailsRow('Location', 'La Jarre, Nabeul'),
-                    buildDetailsRow('Amount', '50dt'),
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Image.asset(
-                          'lib/images/clientDetails.png',
-                          height: 90,
-                          width: 90,
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Client Details',
-                            style: TextStyle(
-                              color: Color(0xFF202E5C),
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    buildDetailsRow('Full Name', 'Foulen Ben Foulen'),
-                    buildDetailsRow('Phone Number', '98654785'),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xFF202E5C),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    'Delivery Status',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildStatusButton('PickedUp', 'lib/images/pickedup.png'),
-                      buildStatusButton(
-                          'Completed', 'lib/images/completed.png'),
-                      buildStatusButton(
-                          'Failed', 'lib/images/failedStatus.png'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildDetailsRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 120, 
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Color(0xFF202E5C),
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(
-                color: Color(0xFFADADAD),
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildStatusButton(String text, String imagePath) {
-    return Column(
-      children: [
-        Image.asset(
-          imagePath,
-          height: 50,
-          width: 50,
-        ),
-        SizedBox(height: 4),
-        Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: OrderDetailsPage(),
-  ));
-}*/
-
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -296,8 +87,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             children: [
                               Image.asset(
                                 'lib/images/details.png',
-                                height: 90,
-                                width: 90,
+                                height: 50,
+                                width: 50,
                               ),
                               SizedBox(width: 8),
                               Expanded(
@@ -317,13 +108,15 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           buildDetailsRow('Description', colisDetails['description']),
                           buildDetailsRow('Location', colisDetails['location']),
                           buildDetailsRow('Amount', colisDetails['amount'].toString()),
+                          buildDetailsRow('Status', colisDetails['status']),
+
                           SizedBox(height: 16),
                           Row(
                             children: [
                               Image.asset(
                                 'lib/images/clientDetails.png',
-                                height: 90,
-                                width: 90,
+                                height: 50,
+                                width: 50,
                               ),
                               SizedBox(width: 8),
                               Expanded(
@@ -331,7 +124,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   'Client Details',
                                   style: TextStyle(
                                     color: Color(0xFF202E5C),
-                                    fontSize: 25,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -420,7 +213,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   }
 
   Widget buildStatusButton(String text, String imagePath) {
-    return Column(
+      return Column(
       children: [
         Image.asset(
           imagePath,
