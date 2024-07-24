@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors, avoid_function_literals_in_foreach_calls
 
 import 'package:delivery_app/pages/PickedUpPage_page.dart';
@@ -7,11 +8,22 @@ import 'package:delivery_app/pages/failedDeliveries_page.dart';
 import 'package:delivery_app/pages/home_page.dart';
 import 'package:delivery_app/pages/login_page.dart';
 import 'package:delivery_app/pages/orderDetails.dart';
+import 'package:delivery_app/util/EmailProvider.dart';
+import 'package:delivery_app/util/colis_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'pages/intro_page.dart';
 
-void main() {
+/*void main() {
   runApp(const MyApp());
+}*/
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => EmailProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,23 +31,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: IntroPage(),
-      theme: ThemeData(
-        primarySwatch: createMaterialColor(Color(0xFF202E5C)),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ColisProvider()), // Fournissez votre provider ici
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: IntroPage(),
+        theme: ThemeData(
+          primarySwatch: createMaterialColor(Color(0xFF202E5C)),
+        ),
+        routes: {
+         // '/homePage': (context) => HomePage(),
+         '/homePage': (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final email = args?['email'] as String?;
+          return HomePage();
+          },
+          '/loginPage': (context) => LoginPage(),
+          '/allDeliveries': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+            final email = args?['email'] as String?;
+            return AllDeliveriesPage();
+          },
+         // '/allDeliveries': (context) => AllDeliveriesPage(),
+          '/failedDeliveries': (context) => FailedDeliveriesPage(),
+          //'/pickedUpDeliveries': (context) => PickedUpDeliveriesPage(),
+           '/pickedUpDeliveries': (context) {
+          /*  final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final email = args?['email'] as String?;*/
+          return PickedUpDeliveriesPage();
+          },
+          '/completedDeliveries': (context) => CompletedDeliveriesPage(),
+          '/orderDetails': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
+            return OrderDetailsPage(id: args['id']);
+          },
+        },
       ),
-      routes: {
-        '/homePage': (context) => HomePage(),
-        '/loginPage': (context) => LoginPage(),
-        '/allDeliveries': (context) => AllDeliveriesPage(),
-        '/failedDeliveries': (context) => FailedDeliveriesPage(),
-        '/pickedUpDeliveries': (context) => PickedUpDeliveriesPage(),
-        '/completedDeliveries': (context) => CompletedDeliveriesPage(),
-  '/orderDetails': (context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
-    return OrderDetailsPage(id: args['id']);
-  },      },
     );
   }
 }

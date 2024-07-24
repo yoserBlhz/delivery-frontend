@@ -3,7 +3,10 @@
 import 'package:delivery_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
+
+import '../util/EmailProvider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -48,10 +51,20 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 201) {
         // Login successful
-        Navigator.push(
+        /*Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+         MaterialPageRoute(builder: (context) => HomePage()),
+        );*/
+        Provider.of<EmailProvider>(context, listen: false).setEmail(_emailController.text);
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+
+             // builder: (context) => HomePage( email: _emailController.text), // Pass email to HomePage
+            )
+            );
       } else {
         // Login failed
         _showErrorDialog('Invalid email or password.');

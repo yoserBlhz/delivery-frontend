@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,7 +26,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 Future<void> updateDeliveryStatus(String status) async {
   // Envoyer la requête HTTP pour mettre à jour le statut de la livraison
   final response = await http.patch(
-    Uri.parse('https://delivery-4yv5.onrender.com/colis/${widget.id}/status'),
+    Uri.parse('https://delivery-4yv5.onrender.com/facturenew/${widget.id}/status'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -50,7 +50,7 @@ Future<void> updateDeliveryStatus(String status) async {
 
 
   Future<void> fetchColisDetails() async {
-    final response = await http.get(Uri.parse('https://delivery-4yv5.onrender.com/colis/${widget.id}'));
+    final response = await http.get(Uri.parse('https://delivery-4yv5.onrender.com/facturenew/${widget.id}'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -59,7 +59,7 @@ Future<void> updateDeliveryStatus(String status) async {
       });
     } else {
       // Handle error
-      throw Exception('Failed to load colis details');
+      throw Exception('Failed to load invoice details');
     }
   }
 
@@ -120,7 +120,7 @@ Future<void> updateDeliveryStatus(String status) async {
                               SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  'Your Order Details',
+                                  'Invoice Details',
                                   style: TextStyle(
                                     color: Color(0xFF202E5C),
                                     fontSize: 25,
@@ -130,10 +130,10 @@ Future<void> updateDeliveryStatus(String status) async {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
-                          buildDetailsRow('Order Id', colisDetails['_id']),
-                          buildDetailsRow('Description', colisDetails['description']),
-                          buildDetailsRow('Location', colisDetails['location']),
+                          SizedBox(height: 19),
+                          buildDetailsRow('Invoice Number', colisDetails['_id']),
+                          //buildDetailsRow('Description', colisDetails['description']),
+                          //buildDetailsRow('Location', colisDetails['location']),
                           buildDetailsRow('Amount', colisDetails['amount'].toString()),
                           buildDetailsRow('Status', colisDetails['status']),
 
@@ -161,6 +161,8 @@ Future<void> updateDeliveryStatus(String status) async {
                           SizedBox(height: 16),
                           buildDetailsRow('Full Name', colisDetails['clientName']),
                           buildDetailsRow('Phone Number', colisDetails['clientPhone']),
+                          buildDetailsRow('Location', colisDetails['location']),
+
                         ],
                       ),
                     ),
@@ -182,7 +184,7 @@ Future<void> updateDeliveryStatus(String status) async {
                     child: Column(
                       children: [
                         Text(
-                          'Delivery Status',
+                          'Invoice Status',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -218,7 +220,7 @@ Future<void> updateDeliveryStatus(String status) async {
               title,
               style: TextStyle(
                 color: Color(0xFF202E5C),
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -228,7 +230,7 @@ Future<void> updateDeliveryStatus(String status) async {
               value,
               style: TextStyle(
                 color: Color(0xFFADADAD),
-                fontSize: 22,
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
               ),
               overflow: TextOverflow.ellipsis,
