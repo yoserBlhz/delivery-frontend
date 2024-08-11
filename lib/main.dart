@@ -43,17 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
          // '/homePage': (context) => HomePage(),
-         '/homePage': (context) {
-            final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final email = args?['email'] as String?;
-          return HomePage();
-          },
+         '/homePage': (context) {return HomePage();},
           '/loginPage': (context) => LoginPage(),
-          '/allDeliveries': (context) {
-            final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-            final email = args?['email'] as String?;
-            return AllDeliveriesPage();
-          },
+          '/allDeliveries': (context) {return AllDeliveriesPage();},
          // '/allDeliveries': (context) => AllDeliveriesPage(),
           '/failedDeliveries': (context) => FailedDeliveriesPage(),
           //'/pickedUpDeliveries': (context) => PickedUpDeliveriesPage(),

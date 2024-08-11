@@ -1,5 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
-
+// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, file_names
 import 'package:flutter/material.dart';
 import 'package:delivery_app/util/delivery_short.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +25,7 @@ class _AllDeliveriesPageState extends State<AllDeliveriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final emailProvider = Provider.of<EmailProvider>(context);
+   // final emailProvider = Provider.of<EmailProvider>(context);
     final colisProvider = Provider.of<ColisProvider>(context);
 
     return Scaffold(
