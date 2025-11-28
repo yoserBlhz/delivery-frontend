@@ -34,7 +34,7 @@ Envoi de SMS via Twilio :
 Configurez les informations Twilio dans le backend. Le service de SMS nécessite un compte Twilio valide.
 Assurez-vous que le backend envoie correctement les SMS lorsque le statut des colis change.
 # Captures d'écran
-
+<img width="1255" height="782" alt="Image" src="https://github.com/user-attachments/assets/2e79e7ea-e1aa-4ed4-835a-9aa33e06d652" />
 
 # Technologies utilisées
 Flutter : Pour le développement de l'application mobile.
